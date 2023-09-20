@@ -1,0 +1,49 @@
+https://pokeapi.co/api/v2/pokemon/pikachu
+
+    "forms": [
+        {
+            "name": "pikachu",
+            "url": "https://pokeapi.co/api/v2/pokemon-form/25/"
+        }
+    ],
+
+
+https://pokeapi.co/api/v2/pokemon/meowth
+
+    "forms": [
+        {
+            "name": "meowth",
+            "url": "https://pokeapi.co/api/v2/pokemon-form/52/"
+        }
+    ],
+
+
+
+https://pokeapi.co/api/v2/pokemon/vulpix
+
+    "forms": [
+        {
+            "name": "vulpix",
+            "url": "https://pokeapi.co/api/v2/pokemon-form/37/"
+        }
+    ],
+
+
+https://pokeapi.co/api/v2/pokemon/psyduck
+
+    "forms": [
+        {
+            "name": "psyduck",
+            "url": "https://pokeapi.co/api/v2/pokemon-form/54/"
+        }
+    ],
+
+
+https://pokeapi.co/api/v2/pokemon/electrode
+
+    "forms": [
+        {
+            "name": "electrode",
+            "url": "https://pokeapi.co/api/v2/pokemon-form/101/"
+        }
+    ],

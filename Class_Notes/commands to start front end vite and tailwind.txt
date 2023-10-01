@@ -1,4 +1,6 @@
-Starting Vite project
+*********Starting Vite project*********
+*********Front End (client folder)
+To run front end: npm run dev
 
 1. npm create vite@latest {folder name}(usually front-end or client) -- template react
 	select React
@@ -6,7 +8,7 @@ Starting Vite project
 2. npm install
 3. npm run dev
 
-Installing Tailwind
+*********Installing Tailwind
 
 1. npm install -D tailwinds autoprefixer postcss
 2  npx tailwindcss init -p
@@ -22,4 +24,235 @@ Installing Tailwind
 
 5. Then you can command arg "npm run dev" to run the server.
 So Tailwind install can go before step 3 when starting vite project.
+
+
+*********Bootstrap:
+
+npm i bootstrap
+
+in main.jsx
+import 'bootstrap/dist/css/bootstrap.min.css'
+
+in index.html
+after html land="en" data-bs-theme="dark"
+
+
+*********Install react-router-dom (BrowserRouter, Routes, Route, Link, useNavigate, useParams)
+terminal: npm i react-router-dom
+in App.jsx:
+import { BrowserRouter, Routes, Route, link, useNavigate, useParams } from "react-router-dom"
+
+for useNavigate, set const navigate = useNavigate()
+
+
+*********Install Axios
+terminal: npm i axios
+
+
+
+
+********Using useEffect and Axios
+useEffect(() => {
+	axios.get('http://localhost:8000/api/users')
+		.then(res => {
+			setAllUsers(res.data)
+		})
+		.catch(err => {
+			console.log(err)
+		})
+},[])
+
+
+
+
+*********Server:*********
+To run server: nodemon server.js
+
+Inside project folder 
+create server folder
+
+cd inside server folder
+terminal: npm init -y
+terminal: npm i express
+
+import express in server.js:
+const express = require('express')
+const app = express()
+
+const port = '8000'
+
+app.use(express.json())
+app.use( express.urlencoded({extended:true}) )
+
+
+add this at the bottom
+app.listen( port, () => console.log(`Listening on port: ${port}`) )
+
+
+
+
+*********Install nodemon:
+terminal: npm i -g nodemon
+
+
+
+
+*********Mongo DB:
+after installation of Mongo
+terminal: cd c:/"Program Files"/MongoDB/Server/<version_number>/bin/
+
+then run
+
+terminal: mongo.exe
+should see > instead of $
+
+show dbs = shows databases
+
+use dbname = selects that db
+
+db.dropDatabase() drops db you are currently in
+
+use new_db_name = creates new db
+
+show collections = shows collections (tables)
+
+db.createCollection('nameOfCollection') = creates a collection
+
+db.collectionName.insert({name: "Matt"}) = how to insert document in collection
+
+
+*********Mongoose:
+cd into server folder
+terminal: npm init -y
+terminal: npm install mongoose express
+
+in file we are using mongoose (server.js)
+const mongoose = require('mongoose');
+
+*********in config folder create mongoose.config.js
+add to file:
+const mongoose = require('mongoose');
+ 
+mongoose.connect('mongodb://127.0.0.1:27017/name_of_your_DB', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+    .then(() => console.log('Established a connection to the database'))
+    .catch(err => console.log('Something went wrong when connecting to the database ', err));
+
+
+*********in models folder: create user.model.js  ( not always user, but name of model)
+add to file:
+const mongoose = require('mongoose');
+ 
+const UserSchema = new mongoose.Schema({
+    name: {
+        type: String
+    },
+    age: {
+        type: Number
+    }
+});
+ 
+const User = mongoose.model('User', UserSchema);
+ 
+module.exports = User;
+
+
+*********in controllers folder: create user.controller.js
+add to file:
+
+const User = require('../models/user.model');
+ 
+module.exports.findAllUsers = (req, res) => {
+    User.find()
+        .then((allDaUsers) => {
+            res.json({ users: allDaUsers })
+        })
+        .catch((err) => {
+            res.json({ message: 'Something went wrong', error: err })
+        });
+}
+ 
+module.exports.findOneSingleUser = (req, res) => {
+    User.findOne({ _id: req.params.id })
+        .then(oneSingleUser => {
+            res.json({ user: oneSingleUser })
+        })
+        .catch((err) => {
+            res.json({ message: 'Something went wrong', error: err })
+        });}
+ 
+module.exports.createNewUser = (req, res) => {
+    User.create(req.body)
+        .then(newlyCreatedUser => {
+            res.json({ user: newlyCreatedUser })
+        })
+        .catch((err) => {
+            res.json({ message: 'Something went wrong', error: err })
+        });}
+ 
+module.exports.updateExistingUser = (req, res) => {
+    User.findOneAndUpdate(
+        { _id: req.params.id },
+        req.body,
+        { new: true, runValidators: true }
+    )
+        .then(updatedUser => {
+            res.json({ user: updatedUser })
+        })
+        .catch((err) => {
+            res.json({ message: 'Something went wrong', error: err })
+        });}
+ 
+module.exports.deleteAnExistingUser = (req, res) => {
+    User.deleteOne({ _id: req.params.id })
+        .then(result => {
+            res.json({ result: result })
+        })
+        .catch((err) => {
+            res.json({ message: 'Something went wrong', error: err })
+        });}
+
+
+*********in routes folder: create user.routes.js
+add to file:
+const UserController = require('../controllers/user.controller');
+ 
+module.exports = app => {
+    app.get('/api/users', UserController.findAllUsers);
+    app.get('/api/users/:id', UserController.findOneSingleUser);
+    app.patch('/api/users/:id', UserController.updateExistingUser);
+    app.post('/api/users', UserController.createNewUser);
+    app.delete('/api/users/:id', UserController.deleteAnExistingUser);
+}
+
+*********in our server.js
+
+const express = require("express");
+const app = express();
+    
+require("./config/mongoose.config");
+    
+app.use(express.json(), express.urlencoded({ extended: true }));
+    
+const AllMyUserRoutes = require("./routes/user.routes");
+AllMyUserRoutes(app);
+    
+app.listen(8000, () => console.log("The server is all fired up on port 8000"));
+
+
+
+
+*********Install cors:
+terminal: npm i cors
+
+then in server.js file:
+const cors = require('cors')
+
+app.use(cors())          might have to put {origin: "http//:localhost:5173"} in cors()
+
+
+
+
 
